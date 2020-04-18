@@ -6,7 +6,9 @@ import ListPageTab2 from '../ListPageTab2';
 
 const Tab = createMaterialTopTabNavigator();
 
-const ListPage = ({navigation}) => {
+const ListPage = ({route, navigation}) => {
+  const {initialRouteName} = route.params;
+
   return (
     <>
       <View style={{height: 40, alignItems: 'center', flexDirection: 'row'}}>
@@ -17,7 +19,7 @@ const ListPage = ({navigation}) => {
         </TouchableOpacity>
         <Text>ListPage</Text>
       </View>
-      <Tab.Navigator>
+      <Tab.Navigator initialRouteName={initialRouteName}>
         <Tab.Screen name="UseStateList" component={ListPageTab1} />
         <Tab.Screen name="UseReducerList" component={ListPageTab2} />
       </Tab.Navigator>

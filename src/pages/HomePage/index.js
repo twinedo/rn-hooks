@@ -49,6 +49,7 @@ const HomePage = ({navigation}) => {
 
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState('');
 
   const [stateBaru, manggilAksi] = useReducer(ngeReduce, stateAwal);
 
@@ -56,6 +57,7 @@ const HomePage = ({navigation}) => {
 
   useEffect(() => {
     getNewsData();
+    getTokenStorage();
   }, []);
 
   const getNewsData = () => {
@@ -79,6 +81,17 @@ const HomePage = ({navigation}) => {
       });
   };
 
+  const getTokenStorage = async () => {
+    let getToken;
+
+    try {
+      getToken = await AsyncStorage.getItem('token');
+      setToken(getToken);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {stateBaru.loading ? (
@@ -99,6 +112,9 @@ const HomePage = ({navigation}) => {
             <TouchableOpacity onPress={signOut}>
               <Text>Logout</Text>
             </TouchableOpacity>
+          </View>
+          <View>
+            <Text>Token kita: {token}</Text>
           </View>
 
           <NewsReducerContext.Provider value={stateBaru}>

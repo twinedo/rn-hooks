@@ -1,7 +1,17 @@
-import React from 'react';
+/* eslint-disable no-lone-blocks */
+import React, {useContext, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {AuthContext} from '../../router';
 
-const index = () => {
+const SplashScreen = () => {
+  const {restore_token} = useContext(AuthContext);
+
+  setTimeout(() => {
+    {
+      restore_token;
+    }
+  }, 5000);
+
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>SPLASH SCREEN</Text>
@@ -9,6 +19,6 @@ const index = () => {
   );
 };
 
-export default index;
+export default SplashScreen;
 
 const styles = StyleSheet.create({});

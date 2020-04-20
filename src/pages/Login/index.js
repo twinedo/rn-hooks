@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {AuthContext} from '../../router';
 
 const Login = ({navigation}) => {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState('rico@ymail.com');
+  const [password, setPassword] = React.useState('12345678');
 
   const {signIn} = React.useContext(AuthContext);
 

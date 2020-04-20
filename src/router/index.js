@@ -11,6 +11,7 @@ import {
 } from '../pages';
 import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
+import LoginApi from '../api/LoginApi';
 
 const Stack = createStackNavigator();
 export const AuthContext = React.createContext();
@@ -41,6 +42,12 @@ const reducer = (state, action) => {
         isSignOut: true,
         userToken: null,
       };
+    case 'ERROR':
+      return {
+        ...state,
+        userToken: 'Something went wrong',
+        isLoading: false,
+      };
     default:
       return state;
   }
@@ -60,21 +67,55 @@ const Router = () => {
     let value;
 
     try {
-      value = await AsyncStorage.getItem('userToken');
+      value = await AsyncStorage.getItem('token');
       console.log(value);
-
     } catch (e) {
       // error reading value
     }
-    dispatch({type: 'RESTORE_TOKEN', token: value});
+    setTimeout(() => {
+      {
+        dispatch({type: 'RESTORE_TOKEN', token: value});
+      }
+    }, 3000);
   };
 
   const authContext = useMemo(
     () => ({
-      signIn: async (data) => {
-        dispatch({type: 'SIGN_IN', token: 'dummy_token'});
+      signIn: async ({username, password}) => {
+        let fd = new FormData();
+        fd.append('username', username);
+        fd.append('password', password);
+        fd.append('grant_type', 'password');
+        try {
+          const response = await LoginApi.post('/user/v1/signin', fd);
+          await AsyncStorage.setItem(
+            'token',
+            JSON.stringify(response.data.access_token),
+          );
+          await AsyncStorage.setItem(
+            'user_id',
+            JSON.stringify(response.data.user_id),
+          );
+          await AsyncStorage.setItem(
+            'company_id',
+            JSON.stringify(response.data.company_id),
+          );
+          dispatch({type: 'SIGN_IN', token: response.data.access_token});
+        } catch (err) {
+          console.log(err);
+          dispatch({type: 'ERROR'});
+        }
       },
-      signOut: () => dispatch({type: 'SIGN_OUT'}),
+      signOut: async () => {
+        let deleteToken;
+
+        try {
+          deleteToken = await AsyncStorage.setItem('token', '');
+        } catch (error) {
+          console.log(error);
+        }
+        dispatch({type: 'SIGN_OUT'});
+      },
     }),
     [],
   );

@@ -1,9 +1,19 @@
-import React, {useState, useEffect, useReducer} from 'react';
-import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import React, {useState, useEffect, useReducer, useContext} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomePageTab1 from '../HomePageTab1';
 import HomePageTab2 from '../HomePageTab2';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useNavigation} from '@react-navigation/native';
+
+import {AuthContext} from '../../router';
 
 const Tab = createBottomTabNavigator();
 export const NewsContext = React.createContext();
@@ -34,11 +44,15 @@ const ngeReduce = (stateBaru, aksi) => {
   }
 };
 
-const HomePage = () => {
+const HomePage = ({navigation}) => {
+  const navi = useNavigation();
+
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
 
   const [stateBaru, manggilAksi] = useReducer(ngeReduce, stateAwal);
+
+  const {signOut} = React.useContext(AuthContext);
 
   useEffect(() => {
     getNewsData();
@@ -66,7 +80,6 @@ const HomePage = () => {
   };
 
   return (
-
     <>
       {stateBaru.loading ? (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -78,9 +91,14 @@ const HomePage = () => {
             style={{
               height: 40,
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              paddingHorizontal: 8,
             }}>
             <Text>HomePage</Text>
+            <TouchableOpacity onPress={signOut}>
+              <Text>Logout</Text>
+            </TouchableOpacity>
           </View>
 
           <NewsReducerContext.Provider value={stateBaru}>

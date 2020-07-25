@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-
 import Router from './src/router';
 
 const App = () => {

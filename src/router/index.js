@@ -9,6 +9,7 @@ import {
   Login,
   SplashScreen,
   MapPage,
+  SettingsPage,
 } from '../pages';
 import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
@@ -240,6 +241,7 @@ const Router = () => {
                 <Stack.Screen name="EmptyPage" component={EmptyPage} />
                 <Stack.Screen name="DetailPage" component={DetailPage} />
                 <Stack.Screen name="MapPage" component={MapPage} />
+                <Stack.Screen name="SettingsPage" component={SettingsPage} />
               </>
             )}
           </Stack.Navigator>

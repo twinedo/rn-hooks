@@ -1,9 +1,34 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Button,
+} from 'react-native';
 import {NewsContext} from '../HomePage';
+import {useTranslation} from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const HomePageTab1 = ({navigation}) => {
+  const {t, i18n} = useTranslation();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem('translate').then((res) => {
+        if (res) {
+          i18n.changeLanguage(res);
+        } else {
+          i18n.changeLanguage('id');
+        }
+      });
+      return () => console.log('djanwdjb');
+    }, [i18n]),
+  );
+
   return (
     <NewsContext.Consumer>
       {(data) => {
@@ -36,6 +61,8 @@ const HomePageTab1 = ({navigation}) => {
                 source={{uri: data[0].urlToImage}}
                 style={{height: 200, width: 200}}
               />
+              <Text>{data[0].title}</Text>
+              <Text>{t('welcome')}</Text>
             </View>
           </>
         );

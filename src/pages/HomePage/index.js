@@ -54,7 +54,7 @@ const HomePage = ({navigation}) => {
 
   const [stateBaru, manggilAksi] = useReducer(ngeReduce, stateAwal);
 
-  const {signOut} = useContext(AuthContext);
+  const signOut = useContext(AuthContext);
 
   useEffect(() => {
     getNewsData();
@@ -114,9 +114,14 @@ const HomePage = ({navigation}) => {
           paddingHorizontal: 8,
         }}>
         <Text>HomePage</Text>
-        <TouchableOpacity onPress={signOut}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity onPress={() => navigation.navigate('SettingsPage')}>
+            <Text>Options</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => signOut}>
+            <Text>Logout</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View>
         <Button title="go to Map Page" onPress={gotoMapHandler} />

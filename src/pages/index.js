@@ -5,6 +5,7 @@ import ListPage from './ListPage';
 import Login from './Login';
 import SplashScreen from './SplashScreen';
 import MapPage from './MapPage';
+import SettingsPage from './SettingsPage';
 
 export {
   DetailPage,
@@ -14,4 +15,5 @@ export {
   Login,
   SplashScreen,
   MapPage,
+  SettingsPage,
 };

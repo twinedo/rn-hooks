@@ -11,6 +11,14 @@ const EmptyPage = ({navigation}) => {
       <TouchableOpacity onPress={() => navigation.navigate('DetailPage')}>
         <Text>Go To Detail</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ListPage', {
+            initialRouteName: 'UseStateList',
+          })
+        }>
+        <Text>Go To ListPage</Text>
+      </TouchableOpacity>
     </View>
   );
 };

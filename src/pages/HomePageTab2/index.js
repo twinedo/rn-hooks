@@ -25,8 +25,12 @@ const HomePageTab2 = ({navigation}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onPress={() => navigation.navigate('ListPage')}>
-                <Text style={{color: 'white'}}>Go To useReducer List</Text>
+                onPress={() =>
+                  navigation.navigate('ListPage', {
+                    initialRouteName: 'UseStateList',
+                  })
+                }>
+                <Text style={{color: 'white'}}>Go To useState List</Text>
               </TouchableOpacity>
               <Image
                 source={{uri: state.newsData[3].urlToImage}}

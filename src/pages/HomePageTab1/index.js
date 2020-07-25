@@ -30,7 +30,7 @@ const HomePageTab1 = ({navigation}) => {
                     initialRouteName: 'UseReducerList',
                   })
                 }>
-                <Text style={{color: 'white'}}>Go To useState List</Text>
+                <Text style={{color: 'white'}}>Go To useReducer List</Text>
               </TouchableOpacity>
               <Image
                 source={{uri: data[0].urlToImage}}

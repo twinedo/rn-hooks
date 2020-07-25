@@ -5,13 +5,6 @@ import {AuthContext} from '../../router';
 
 const SplashScreen = () => {
   const {restore_token} = useContext(AuthContext);
-
-  setTimeout(() => {
-    {
-      restore_token;
-    }
-  }, 5000);
-
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>SPLASH SCREEN</Text>

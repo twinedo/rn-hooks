@@ -4,7 +4,7 @@ import base64 from 'react-native-base64';
 const authHeader =
   'Basic ' + base64.encode(`${'truckingclient'}:${'12345678'}`);
 export default axios.create({
-  baseURL: 'http://167.71.192.220:9050',
+  baseURL: 'https://d-auth.truckking.id',
   headers: {
     // 'Content-Type': 'application/json',
     Authorization: authHeader,

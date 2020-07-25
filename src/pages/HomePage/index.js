@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useReducer, useContext} from 'react';
 import {
   StyleSheet,
@@ -5,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomePageTab1 from '../HomePageTab1';
@@ -12,8 +14,9 @@ import HomePageTab2 from '../HomePageTab2';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
-
+import {useFocusEffect} from '@react-navigation/native';
 import {AuthContext} from '../../router';
+import {DataSignInContext} from '../../router';
 
 const Tab = createBottomTabNavigator();
 export const NewsContext = React.createContext();
@@ -45,20 +48,24 @@ const ngeReduce = (stateBaru, aksi) => {
 };
 
 const HomePage = ({navigation}) => {
-  const navi = useNavigation();
-
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState('');
 
   const [stateBaru, manggilAksi] = useReducer(ngeReduce, stateAwal);
 
-  const {signOut} = React.useContext(AuthContext);
+  const {signOut} = useContext(AuthContext);
 
   useEffect(() => {
     getNewsData();
     getTokenStorage();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getNewsData();
+    }, []),
+  );
 
   const getNewsData = () => {
     axios
@@ -67,7 +74,7 @@ const HomePage = ({navigation}) => {
       )
       .then((response) => {
         setData(response.data.articles);
-        // console.log(response);
+        console.log(response);
         setLoading(false);
 
         manggilAksi({type: 'FETCH_SUCCESS', isiData: response.data.articles});
@@ -92,34 +99,39 @@ const HomePage = ({navigation}) => {
     }
   };
 
+  const gotoMapHandler = () => {
+    navigation.navigate('MapPage');
+  };
+
   return (
     <>
+      <View
+        style={{
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          paddingHorizontal: 8,
+        }}>
+        <Text>HomePage</Text>
+        <TouchableOpacity onPress={signOut}>
+          <Text>Logout</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Button title="go to Map Page" onPress={gotoMapHandler} />
+      </View>
+
       {stateBaru.loading ? (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <ActivityIndicator size="large" color="#0000ff" />
+          <Text>Loading...</Text>
         </View>
       ) : (
         <>
-          <View
-            style={{
-              height: 40,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              paddingHorizontal: 8,
-            }}>
-            <Text>HomePage</Text>
-            <TouchableOpacity onPress={signOut}>
-              <Text>Logout</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text>Token kita: {token}</Text>
-          </View>
-
           <NewsReducerContext.Provider value={stateBaru}>
             <NewsContext.Provider value={data}>
-              <Tab.Navigator initialRouteName="HomePageTab2">
+              <Tab.Navigator initialRouteName="HomePageTab1">
                 <Tab.Screen name="HomePageTab1" component={HomePageTab1} />
                 <Tab.Screen name="HomePageTab2" component={HomePageTab2} />
               </Tab.Navigator>
